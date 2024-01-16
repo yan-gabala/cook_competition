@@ -1,0 +1,50 @@
+version: '3.3'
+
+volumes:
+    pg_data:
+    static:
+    media:
+
+services:
+  db:
+    container_name: food_db
+    image: postgres:13.3-alpine
+    restart: always
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: food_backend
+    image: devinse/foodgram
+    restart: always
+    env_file: .env
+    volumes:
+      - static:/app/static/
+      - media:/app/media
+    depends_on: 
+        - db
+
+  frontend:
+    container_name: food_frontend
+    env_file: .env
+    image: devinse/foodgram_frontend
+    volumes:
+      - ./frontend/:/app/result_build/
+    depends_on:
+      - backend
+
+  nginx:
+    container_name: food-nginx
+    env_file: .env
+    image: devinse/nginx
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+    volumes:
+      - ./frontend/build/:/usr/share/nginx/html
+      - ./docs/:/usr/share/nginx/html/api/docs/
+      - static:/etc/nginx/html/static/
+      - media:/etc/nginx/html/media/
