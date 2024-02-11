@@ -74,7 +74,7 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v3     
     - name: copy docker-compose.yml and nginx.conf via ssh
-      uses: appleboy/scp-action@v0.1.4
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
@@ -83,7 +83,7 @@ jobs:
         source: 'infra/docker-compose.yml'
         target: '~/food/'
     - name: executing remote ssh command to deploy
-      uses: appleboy/ssh-action@v0.1.4
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
