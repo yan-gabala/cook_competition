@@ -3,7 +3,7 @@ name: Foodprivet
 on: 
   push:
     branches:
-      - master
+      - master temp
 
 jobs:
   tests:
